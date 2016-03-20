@@ -113,8 +113,13 @@ DiscoveryService::process_input(unsigned char* buffer, int size,
 	char addr[18];
 	ba2str(&info->bdaddr, addr);
 
-	std::string name = parse_name(info->data, info->length);
-	ret[addr] = name;
+	//std::string name = parse_name(info->data, info->length);
+	//std::string data((char*)info);
+	boost::python::list data;
+	for (int i = 0; i < size; i++) {
+		data.append(buffer[i]);
+	}
+	ret[addr] = data;
 }
 
 std::string

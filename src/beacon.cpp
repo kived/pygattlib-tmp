@@ -46,7 +46,7 @@ BeaconService::BeaconService(const std::string device)
 void
 BeaconService::process_input(unsigned char* buffer, int size,
 		boost::python::dict & ret) {
-	if(size != BEACON_LE_ADVERTISING_LEN) return;
+//	if(size != BEACON_LE_ADVERTISING_LEN) return;
 
 	unsigned char* ptr = buffer + HCI_EVENT_HDR_SIZE + 1;
 	evt_le_meta_event* meta = (evt_le_meta_event*) ptr;
@@ -81,6 +81,11 @@ BeaconService::process_input(unsigned char* buffer, int size,
 	data.append(beacon_info->minor);
 	data.append(beacon_info->power);
 	data.append(beacon_info->rssi);
+	boost::python::list advdata;
+	for (int i = 0; i < info->length; i++) {
+		advdata.append(info->data[i]);
+	}
+	data.append(advdata);
 	ret[addr] = data;
 }
 
